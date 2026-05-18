@@ -1,4 +1,4 @@
-import './mock/index.js'
+// import './mock/index.js' // Mock.js is disabled for production
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router/index.js'

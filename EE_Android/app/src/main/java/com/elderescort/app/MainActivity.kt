@@ -57,8 +57,9 @@ class MainActivity : AppCompatActivity() {
                 sendStatus("WebView 错误($errorCode): $description URL: $failingUrl")
             }
         }
-        // TODO: 发布前改回 file:///android_asset/index.html
-        webView.loadUrl("http://localhost:5173")
+        // Load bundled frontend production build
+        webView.loadUrl("file:///android_asset/index.html")
+        // webView.loadUrl("http://localhost:5173")
     }
 
     private fun requestMediaProjection() {
