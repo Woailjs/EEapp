@@ -64,6 +64,9 @@ class AudioCaptureService : Service() {
         val captureConfig = AudioPlaybackCaptureConfiguration.Builder(projection)
             .addMatchingUsage(AudioAttributes.USAGE_MEDIA)
             .addMatchingUsage(AudioAttributes.USAGE_UNKNOWN)
+            .addMatchingUsage(AudioAttributes.USAGE_GAME)
+            .addMatchingUsage(AudioAttributes.USAGE_ASSISTANT)
+            .addMatchingUsage(AudioAttributes.USAGE_NOTIFICATION)
             .build()
 
         val bufferSize = AudioRecord.getMinBufferSize(
@@ -172,8 +175,24 @@ class AudioCaptureService : Service() {
         }
     }
 
+    private var audioBytesRead = 0L
+    private var lastAudioLogTime = 0L
+
     private fun processAudio(buffer: ByteArray, length: Int) {
         val rec = recognizer ?: return
+        audioBytesRead += length
+        val now = System.currentTimeMillis()
+        if (now - lastAudioLogTime > 3000) {
+            // 计算 RMS 音量，判断是否真的捕获到了声音
+            var sumSq = 0L
+            for (i in 0 until length step 2) {
+                val sample = ((buffer[i + 1].toInt() shl 8) or (buffer[i].toInt() and 0xFF)).toShort().toInt()
+                sumSq += sample * sample
+            }
+            val rms = Math.sqrt(sumSq.toDouble() / (length / 2))
+            log("音频收集中… (已接收 ${audioBytesRead / 16000 / 2}s, RMS=${rms.toInt()})")
+            lastAudioLogTime = now
+        }
         if (rec.acceptWaveForm(buffer, length)) {
             val text = JSONObject(rec.result).optString("text", "").trim()
             if (text.isNotBlank()) {
@@ -183,6 +202,7 @@ class AudioCaptureService : Service() {
         } else {
             val partial = JSONObject(rec.partialResult).optString("partial", "").trim()
             if (partial.isNotBlank()) {
+                log("部分识别: $partial")
                 TextDispatcher.callback?.invoke(partial)
             }
         }
@@ -205,9 +225,7 @@ class AudioCaptureService : Service() {
 
     private fun log(msg: String) {
         Log.i(TAG, msg)
-        if (msg.startsWith("ERROR") || msg.startsWith("识别结果")) {
-            TextDispatcher.callback?.invoke("[LOG]$msg")
-        }
+        TextDispatcher.callback?.invoke("[LOG]$msg")
     }
 
     private fun createNotificationChannel() {

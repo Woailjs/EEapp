@@ -1,17 +1,20 @@
 package com.elderescort.app
 
+import android.util.Log
 import android.webkit.JavascriptInterface
 
-class AndroidBridge {
-
+class AndroidBridge(
+    private val onFraudDetected: (warningMessage: String, articleId: Int) -> Unit
+) {
     @JavascriptInterface
-    fun onAudioText(text: String) {
-        // Called from JS when frontend sends data back to native.
-        // Reserved for future bidirectional communication.
+    fun showFraudAlert(warningMessage: String, articleId: Int) {
+        Log.i("FraudBridge", "JS调用 showFraudAlert: $warningMessage, articleId=$articleId")
+        onFraudDetected(warningMessage, articleId)
     }
 
     @JavascriptInterface
-    fun getStatus(): String {
-        return "connected"
-    }
+    fun onAudioText(text: String) {}
+
+    @JavascriptInterface
+    fun getStatus(): String = "connected"
 }

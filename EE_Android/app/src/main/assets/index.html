@@ -1,67 +1,26 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ElderEscort</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: #1a1a2e;
-    color: #e0e0e0;
-    font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 24px;
-  }
-  .container { text-align: center; max-width: 480px; width: 100%; }
-  h1 { font-size: 22px; margin-bottom: 4px; color: #7ec8e3; }
-  .badge { display: inline-block; background: #16213e; color: #7ec8e3; padding: 4px 14px; border-radius: 20px; font-size: 13px; margin-bottom: 16px; }
-  #result {
-    background: #16213e; border-radius: 12px; padding: 28px 20px; min-height: 100px;
-    font-size: 18px; line-height: 1.6; word-break: break-word; color: #ccc; transition: color 0.2s;
-  }
-  #result.active { color: #fff; }
-  #log {
-    margin-top: 16px; background: #0f0f23; border-radius: 8px; padding: 12px;
-    font-size: 11px; font-family: monospace; color: #888; text-align: left;
-    max-height: 180px; overflow-y: auto;
-  }
-  .log-line { margin: 2px 0; }
-  .log-line.info { color: #7ec8e3; }
-  .log-line.warn { color: #e3a87e; }
-  .log-line.error { color: #e37e7e; }
-</style>
-</head>
-<body>
-<div class="container">
-  <h1>ElderEscort</h1>
-  <span class="badge">系统内录 · 离线转写</span>
-  <div id="result">等待接收音频文本…</div>
-  <div id="log"></div>
-</div>
-
-<script>
-  var $result = document.getElementById('result');
-  var $log = document.getElementById('log');
-  var logLines = [];
-
-  window.receiveAudioText = function(text) {
-    $result.textContent = text;
-    $result.classList.add('active');
-    setTimeout(function() { $result.classList.remove('active'); }, 300);
-  };
-
-  window.onAppStatus = function(msg) {
-    var now = new Date().toLocaleTimeString();
-    var line = '[' + now + '] ' + msg;
-    logLines.push(line);
-    if (logLines.length > 20) logLines.shift();
-    $log.innerHTML = logLines.map(function(l) { return '<div class="log-line">' + l + '</div>'; }).join('');
-    $log.scrollTop = $log.scrollHeight;
-  };
-</script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>防诈守护</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 100%;
+        min-height: 100vh;
+        overflow-x: hidden;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-text-size-adjust: 100%;
+        -webkit-font-smoothing: antialiased;
+        font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", sans-serif;
+      }
+    </style>
+    <script type="module" crossorigin src="./assets/index-DHdtDDKW.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-B3lW4IiJ.css">
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
 </html>

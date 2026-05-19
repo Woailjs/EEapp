@@ -3,6 +3,7 @@
     <div class="alert-box">
       <div class="alert-icon">⚠️</div>
       <p class="alert-msg">{{ warningMsg }}</p>
+      <p class="alert-sub">您可能正在面临诱导性推销或欺诈，请谨慎。点击此处查看科学处理方法。</p>
       <button class="alert-btn" @click="$emit('view-truth')">查看防骗真相</button>
       <button class="alert-dismiss" @click="$emit('close')">我知道了</button>
     </div>
@@ -57,7 +58,15 @@ defineEmits(['close', 'view-truth'])
   font-weight: 700;
   color: #fff;
   line-height: 1.6;
-  margin-bottom: 36px;
+  margin-bottom: 16px;
+  word-break: break-word;
+}
+
+.alert-sub {
+  font-size: 22px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
+  margin-bottom: 28px;
   word-break: break-word;
 }
 

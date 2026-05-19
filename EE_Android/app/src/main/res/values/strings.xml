@@ -2,5 +2,6 @@
 <resources>
     <string name="app_name">ElderEscort</string>
     <string name="notification_channel_name">Audio Capture</string>
+    <string name="notification_channel_fraud">Fraud Alert</string>
     <string name="notification_text">Capturing system audio for transcription…</string>
 </resources>
